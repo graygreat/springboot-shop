@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import shop.springbootshop.domain.Member;
 import shop.springbootshop.domain.MemberRepository;
 
+import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,11 +26,11 @@ public class MemberService {
     }
 
     private void validateDuplicateMember(Member member) {
-        List<Member> findMembers = memberRepository.findByName(member.getName());
-        if (!findMembers.isEmpty()) {
-            throw new IllegalStateException("이미 존재하는 회원입니다.");
+        Member findMember = memberRepository.findByName(member.getName());
+        Optional<Member> optionalMember = Optional.ofNullable(findMember);
+        if (optionalMember.isPresent()) {
+            throw new IllegalStateException("이미 존재하는 회원입니다");
         }
-
     }
 
     public List<Member> findMembers() {
